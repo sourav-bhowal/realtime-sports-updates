@@ -1,11 +1,5 @@
 import { z } from "zod";
 
-const isoDateStringSchema = z
-  .string()
-  .refine((value) => !Number.isNaN(Date.parse(value)), {
-    message: "Must be a valid ISO date string",
-  });
-
 export const MATCH_STATUS = {
   SCHEDULED: "scheduled",
   LIVE: "live",
@@ -25,8 +19,8 @@ export const createMatchSchema = z
     sport: z.string().trim().min(1, "Sport is required"),
     homeTeam: z.string().trim().min(1, "Home team is required"),
     awayTeam: z.string().trim().min(1, "Away team is required"),
-    startTime: isoDateStringSchema,
-    endTime: isoDateStringSchema,
+    startTime: z.iso.datetime(),
+    endTime: z.iso.datetime(),
     homeScore: z.coerce.number().int().nonnegative().optional(),
     awayScore: z.coerce.number().int().nonnegative().optional(),
   })
@@ -36,7 +30,7 @@ export const createMatchSchema = z
 
     if (endTime <= startTime) {
       ctx.addIssue({
-        code: z.ZodIssueCode.custom,
+        code: "custom",
         path: ["endTime"],
         message: "endTime must be after startTime",
       });
