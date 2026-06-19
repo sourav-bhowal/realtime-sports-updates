@@ -16,7 +16,7 @@ export const getMatches = async (req: Request, res: Response) => {
   if (!success) {
     return res
       .status(400)
-      .json({ error: "Invalid query parameters", details: error.format() });
+      .json({ error: "Invalid query parameters", details: error.issues });
   }
 
   const limit = Math.min(data.limit || 50, 100);
@@ -44,7 +44,7 @@ export const createMatch = async (req: Request, res: Response) => {
   if (!success) {
     return res
       .status(400)
-      .json({ error: "Invalid match data", details: error.format() });
+      .json({ error: "Invalid match data", details: error.issues });
   }
 
   try {
