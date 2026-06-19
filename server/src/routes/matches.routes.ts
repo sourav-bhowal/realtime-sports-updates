@@ -1,9 +1,8 @@
 import { Router } from "express";
-import { getMatches, getMatchById } from "../controllers/match.controllers";
+import { getMatches, createMatch } from "../controllers/match.controllers";
 
 const matchesRouter = Router();
 
-matchesRouter.get("/", getMatches);
-matchesRouter.get("/:id", getMatchById);
+matchesRouter.route("/").get(getMatches).post(createMatch);
 
 export default matchesRouter;
