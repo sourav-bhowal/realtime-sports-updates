@@ -62,6 +62,11 @@ export const createMatch = async (req: Request, res: Response) => {
       })
       .returning();
 
+    // Broadcast the newly created match to all connected WebSocket clients using the app.locals function
+    if (res.app.locals.broadcastMatchCreated) {
+      res.app.locals.broadcastMatchCreated(event);
+    }
+
     res
       .status(201)
       .json({ data: event, message: "Match created successfully" });
